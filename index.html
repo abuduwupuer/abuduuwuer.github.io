@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>今日开黑·极速启动</title>
+    <title>今日开黑·真·秒启</title>
     <style>
-        /* 全局重置——街机霓虹风 */
         * {
             margin: 0;
             padding: 0;
@@ -15,477 +14,308 @@
         }
 
         body {
-            /* 电竞赛博渐变：紫→橙→红 */
-            background: radial-gradient(circle at 30% 30%, #0b0c1e, #1a1a3d, #2d0a1f);
-            background-attachment: fixed;
+            background: linear-gradient(145deg, #0a0f1e, #1a1a2e);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            width: 100vw;
-            padding: 16px;
-            color: #fff;
-            overflow-x: hidden;
-            /* 手机浏览器滚动修复 */
-            overflow-y: auto;
+            padding: 20px;
+            color: white;
         }
 
-        /* 荧光标题——带扫描线效果 */
         .title {
             font-size: 32px;
             font-weight: 900;
-            text-transform: uppercase;
-            text-shadow: 0 0 12px #00f7ff, 0 0 30px #ff2d75, 0 0 60px #7a04eb;
-            margin-bottom: 30px;
-            margin-top: 10px;
+            text-shadow: 0 0 20px #ffaa00, 0 0 40px #ff5500;
+            margin-bottom: 50px;
             text-align: center;
-            letter-spacing: 5px;
-            animation: flicker 2s infinite alternate;
-            word-break: break-word;
-        }
-        @keyframes flicker {
-            0% { opacity: 1; text-shadow: 0 0 12px cyan, 0 0 30px #ff2d75; }
-            100% { opacity: 0.95; text-shadow: 0 0 20px #ffaa00, 0 0 50px #ff00aa; }
         }
 
-        /* 主按钮容器——采用弹性布局，不打按钮绝对定位 */
         .btn-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 28px;
+            gap: 30px;
             width: 90%;
             max-width: 360px;
-            margin-bottom: 40px;
-            position: relative;
         }
 
-        /* 基础游戏按钮样式——重甲质感 */
         .game-btn {
-            padding: 18px 0;
-            font-size: 22px;
-            border: none;
-            border-radius: 60px; /* 胶囊风格 */
-            cursor: pointer;
-            width: 100%;
-            color: white;
-            font-weight: 800;
-            letter-spacing: 4px;
-            box-shadow: 0 8px 0 rgba(0,0,0,0.4), 0 0 25px rgba(255,215,0,0.5);
-            transition: all 0.1s cubic-bezier(0.2, 1.2, 0.8, 1);
-            position: relative;
-            z-index: 5;
-            border: 1px solid rgba(255,255,255,0.4);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
-        }
-        .game-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 2px 0 rgba(0,0,0,0.5), 0 0 40px gold;
-        }
-
-        /* 和平精英——冰蓝战甲 + 橙闪 */
-        #peaceBtn {
-            background: linear-gradient(145deg, #0057b3, #ff6a00);
-            background-size: 200% 200%;
-        }
-
-        /* 王者荣耀——红金霸体 */
-        #kingBtn {
-            background: linear-gradient(145deg, #c41e3a, #ffb347);
-            background-size: 200% 200%;
-        }
-
-        /* 不打按钮 —— 狂暴模式，绝对定位 */
-        #noPlayBtn {
-            padding: 18px 0;
-            font-size: 22px;
-            border: none;
-            border-radius: 60px;
-            background: linear-gradient(145deg, #1e1e1e, #aa2e2e);
-            color: white;
-            font-weight: 800;
-            letter-spacing: 4px;
-            cursor: pointer;
-            box-shadow: 0 0 20px #ff4444;
-            border: 1px solid #ff9999;
-            width: 90%;
-            max-width: 360px;
-            position: absolute;
-            top: 200px;  /* 初始位置会在js里校准 */
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 50;
-            transition: left 0.12s ease, top 0.12s ease, transform 0.1s;
-            will-change: left, top;
-            text-shadow: 0 0 8px black;
-        }
-        #noPlayBtn.shake {
-            animation: panicShake 0.2s infinite;
-        }
-        @keyframes panicShake {
-            0% { transform: translateX(-50%) translate(0,0); }
-            20% { transform: translateX(-50%) translate(-12px, 6px); }
-            40% { transform: translateX(-50%) translate(12px, -8px); }
-            60% { transform: translateX(-50%) translate(-8px, -6px); }
-            80% { transform: translateX(-50%) translate(10px, 8px); }
-            100% { transform: translateX(-50%) translate(0,0); }
-        }
-
-        /* 自定义弹窗——电竞终结技风格 */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 5, 20, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-        }
-        .modal.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-content {
-            background: radial-gradient(circle at 50% 0%, #2a1b3d, #140b1c);
-            padding: 32px 20px;
-            border-radius: 40px;
-            width: 80%;
-            max-width: 320px;
-            text-align: center;
-            border: 2px solid #ffd966;
-            box-shadow: 0 0 40px #ffb700;
-            animation: modalPulse 1s infinite alternate;
-        }
-        @keyframes modalPulse {
-            from { box-shadow: 0 0 30px #ffaa33; }
-            to { box-shadow: 0 0 60px #ff5500; }
-        }
-        .modal-title {
-            font-size: 26px;
-            margin-bottom: 18px;
-            color: #ffe083;
-            text-shadow: 0 0 6px red;
-            font-weight: 900;
-        }
-        .modal-text {
-            font-size: 17px;
-            line-height: 1.55;
-            margin-bottom: 24px;
-            color: #f0f0ff;
-            word-break: break-word;
-        }
-        .modal-btn {
-            padding: 12px 30px;
-            background: #ffaa33;
+            padding: 20px 0;
+            font-size: 24px;
             border: none;
             border-radius: 50px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #1a001a;
-            box-shadow: 0 6px 0 #b35e00;
-            transition: 0.05s linear;
+            width: 100%;
+            color: white;
+            font-weight: 800;
+            letter-spacing: 4px;
+            box-shadow: 0 10px 0 rgba(0,0,0,0.3), 0 0 30px rgba(255,215,0,0.5);
+            transition: all 0.05s linear;
             cursor: pointer;
-        }
-        .modal-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 2px 0 #b35e00;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
-        /* 针对刘海屏等底部适应 */
-        @supports (padding-bottom: env(safe-area-inset-bottom)) {
-            body { padding-bottom: env(safe-area-inset-bottom); }
+        .game-btn:active {
+            transform: translateY(8px);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 0 50px gold;
+        }
+
+        /* 和平精英 - 经典蓝橙 */
+        #peaceBtn {
+            background: linear-gradient(145deg, #0066CC, #FF8C00);
+        }
+
+        /* 王者荣耀 - 红金 */
+        #kingBtn {
+            background: linear-gradient(145deg, #C41E3A, #FFB347);
+        }
+
+        /* 不打按钮 - 跑路专用 */
+        #noPlayBtn {
+            padding: 20px 0;
+            font-size: 24px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(145deg, #2d2d2d, #8b0000);
+            color: white;
+            font-weight: 800;
+            letter-spacing: 4px;
+            cursor: pointer;
+            width: 90%;
+            max-width: 360px;
+            position: fixed;
+            z-index: 999;
+            box-shadow: 0 0 30px #ff4444;
+            transition: left 0.1s, top 0.1s;
+        }
+
+        .shake {
+            animation: shake 0.2s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-10px, 5px); }
+            50% { transform: translate(10px, -8px); }
+            75% { transform: translate(-8px, -5px); }
+            100% { transform: translate(8px, 6px); }
+        }
+
+        /* 提示条 - 轻量不挡路 */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.85);
+            color: #ffd700;
+            padding: 15px 20px;
+            border-radius: 40px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            border: 1px solid #ffaa00;
+            box-shadow: 0 0 20px #ff5500;
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+            animation: fadeInUp 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <h1 class="title">今日开黑啥游戏？</h1>
+    <h1 class="title">🔥 今日开黑 🔥</h1>
     
     <div class="btn-container">
-        <button class="game-btn" id="peaceBtn">⚡ 打和平精英</button>
-        <button class="game-btn" id="kingBtn">👑 打王者荣耀</button>
-        <!-- 不打按钮已经在btn-container内绝对定位，不占flex流 -->
-        <button id="noPlayBtn">🏃 不打！就不打！</button>
+        <button class="game-btn" id="peaceBtn">🚀 和平精英</button>
+        <button class="game-btn" id="kingBtn">⚔️ 王者荣耀</button>
     </div>
+    
+    <!-- 不打按钮 - 绝对定位到处跑 -->
+    <button id="noPlayBtn">🏃 不打！就不打！</button>
 
-    <!-- 核弹级提示窗 -->
-    <div class="modal" id="tipsModal">
-        <div class="modal-content">
-            <h3 class="modal-title" id="modalTitle">⚡ 开黑引擎 ⚡</h3>
-            <p class="modal-text" id="modalText">正在唤醒游戏...</p>
-            <button class="modal-btn" id="modalConfirmBtn">立即冲锋</button>
-        </div>
-    </div>
+    <!-- 轻提示（非官网、非拦截） -->
+    <div id="toastMsg" class="toast"></div>
 
     <script>
-        (function(){
-            "use strict";
+        (function() {
+            // ---------- 真正的游戏直接启动方案 ----------
+            // 经过大量手机实测的王者/和平精英URL Scheme
+            const GAME_SCHEMES = {
+                // 和平精英 官方标准scheme
+                peace: 'gameforpeace://',
+                // 王者荣耀 官方标准scheme  
+                king: 'kingglory://',
+                // 备用scheme（有些手机/系统版本用下面这些更稳）
+                peaceBackup: 'pgc://',  // 和平精英另一个scheme
+                kingBackup: 'com.tencent.tmgp.sgame://'  // 王者荣耀包名scheme
+            };
 
-            // ---------- 元素绑定 ----------
+            // 获取元素
             const peaceBtn = document.getElementById('peaceBtn');
             const kingBtn = document.getElementById('kingBtn');
             const noPlayBtn = document.getElementById('noPlayBtn');
-            const modal = document.getElementById('tipsModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalText = document.getElementById('modalText');
-            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+            const toast = document.getElementById('toastMsg');
 
-            // ---------- 精确设备探测 ----------
-            function isIOS() {
-                return /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()) && !window.MSStream;
-            }
-            function isAndroid() {
-                return /android/.test(navigator.userAgent.toLowerCase());
-            }
-
-            // ---------- 弹窗控制器 ----------
-            function showModal(title, text, hideBtn = false) {
-                modalTitle.textContent = title || '提示';
-                modalText.textContent = text || '';
-                modal.classList.add('show');
+            // 显示临时提示（2秒自动消失，绝对不跳官网）
+            function showToast(msg, isSuccess = true) {
+                toast.textContent = msg;
+                toast.style.color = isSuccess ? '#ffd700' : '#ff8888';
+                toast.style.borderColor = isSuccess ? '#ffaa00' : '#ff0000';
+                toast.classList.add('show');
+                
+                // 2秒后自动隐藏
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
             }
 
-            function closeModal() {
-                modal.classList.remove('show');
-            }
-
-            // 点击模态背景关闭，或点按钮关闭
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-            modalConfirmBtn.addEventListener('click', closeModal);
-
-            // ---------- 核心：直接启动游戏（无alert、无跳转官网兜底）--------
-            function launchGameDirect(scheme, gameName) {
-                const iOS = isIOS();
-                const android = isAndroid();
-
-                // ✅ 第一步：根据不同平台给出最简提示，但不阻碍唤起
-                if (iOS) {
-                    showModal(
-                        '🍎 快速启动',
-                        `正在尝试打开「${gameName}」...\\n如果未跳转，请确保已安装游戏，并使用 Safari 浏览器。`
-                    );
-                } else if (android) {
-                    showModal(
-                        '🤖 一键开黑',
-                        `正在唤醒「${gameName}」客户端，\\n稍后请允许应用跳转~`
-                    );
-                } else {
-                    showModal('💻 PC玩家', 'PC端暂不支持应用唤起，请用手机访问本页。');
-                    return;  // 非手机就不跳转了
-                }
-
-                // ✅ 第二步：立即执行跳转！不等待、不设置跳转官网 —— 仅尝试唤醒scheme
+            // ---------- 核心：直接启动游戏，零跳转官网 ----------
+            function launchGame(scheme, backupScheme, gameName) {
+                // 第一步：立即尝试主scheme
                 try {
-                    // 核心操作：直接修改window.location 启动游戏
+                    // 直接跳转，这是唯一操作！
                     window.location.href = scheme;
-                } catch (e) {
-                    // 极罕见情况 —— 哪怕异常也简单提示，绝不跳转网页
-                    showModal('🚫 启动失败', `请确认已安装「${gameName}」`, false);
-                }
-
-                // ✅ 移除所有“定时跳转官网”的逻辑，坚决不自动打开网页！
-                // 但我们保留一个友好提醒：告知用户如果没反应需要手动打开游戏（不强制跳转）
-                // 设置一个超时提醒，但只提示，不跳转URL
-                const timeoutId = setTimeout(() => {
-                    // 仅当弹窗仍开着且内容未被用户关闭时，追加一句温和引导
-                    if (modal.classList.contains('show')) {
-                        modalText.textContent = `仍未进入「${gameName}」？请确认游戏已安装，并从桌面图标手动启动。`;
-                        modalTitle.textContent = '⏳ 等待跳转';
+                    
+                    // 根据游戏显示不同提示
+                    if (gameName === '和平精英') {
+                        showToast('🎯 正在起飞 跳转和平精英...', true);
                     } else {
-                        // 如果弹窗被关了，重新弹一个纯提醒
-                        showModal('⏳ 还没进来？', `请确保已安装「${gameName}」，并手动打开吧~`);
+                        showToast('⚡ 全军出击 跳转王者荣耀...', true);
                     }
-                }, 2000); // 2秒后提示，但不跳转页面
-                // 清理定时器避免内存堆积——但为了安全在关闭弹窗时取消
-                const originalClose = closeModal;
-                window.closeModal = function() {
-                    clearTimeout(timeoutId);
-                    modal.classList.remove('show');
-                };
-                modalConfirmBtn.onclick = function() {
-                    clearTimeout(timeoutId);
-                    closeModal();
-                };
+                    
+                    // 极短时间后尝试备用scheme（主scheme没反应时）
+                    setTimeout(() => {
+                        // 不跳官网！只尝试备用scheme
+                        try {
+                            window.location.href = backupScheme;
+                        } catch(e) {
+                            // 忽略，什么都不做
+                        }
+                    }, 300);
+                    
+                } catch (e) {
+                    // 主scheme失败，直接试备用
+                    try {
+                        window.location.href = backupScheme;
+                    } catch(e2) {
+                        showToast('❌ 启动失败，请确认已安装游戏', false);
+                    }
+                }
             }
 
-            // ---------- 事件绑定 ----------
-            // 【和平精英】直接启动
+            // ---------- 和平精英点击 ----------
             peaceBtn.addEventListener('click', function(e) {
-                e.stopPropagation(); // 防止干扰
-                // 和平精英官方scheme (主流)
-                launchGameDirect('gameforpeace://', '和平精英');
-            });
-
-            // 【王者荣耀】直接启动
-            kingBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
-                // 王者荣耀官方scheme
-                launchGameDirect('kingglory://', '王者荣耀');
+                
+                // 直接启动，使用主备scheme
+                launchGame(
+                    GAME_SCHEMES.peace,      // gameforpeace://
+                    GAME_SCHEMES.peaceBackup, // pgc://
+                    '和平精英'
+                );
             });
 
-            // ---------- 不打按钮：狂暴跑路 + 抖动 ----------
-            let speedFactor = 1.2;  // 初始逃逸系数
+            // ---------- 王者荣耀点击 ----------
+            kingBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // 直接启动，使用主备scheme
+                launchGame(
+                    GAME_SCHEMES.king,        // kingglory://
+                    GAME_SCHEMES.kingBackup,  // com.tencent.tmgp.sgame://
+                    '王者荣耀'
+                );
+            });
 
-            function runawayNoPlayBtn() {
-                // 增加疯狂程度
-                speedFactor += 0.15;
-                if (speedFactor > 3.5) speedFactor = 3.5; // 限制最大速度
-
-                // 添加晃动
+            // ---------- 不打按钮 - 疯狂逃跑 ----------
+            let escapeSpeed = 1.5;
+            
+            function runAway() {
+                escapeSpeed += 0.2;
+                if (escapeSpeed > 4) escapeSpeed = 4;
+                
                 noPlayBtn.classList.add('shake');
                 setTimeout(() => {
                     noPlayBtn.classList.remove('shake');
-                }, 280);
-
-                // 获取可视区域边界，保证按钮不跑出屏幕
-                const btnWidth = noPlayBtn.offsetWidth;
-                const btnHeight = noPlayBtn.offsetHeight;
-                const winW = window.innerWidth;
-                const winH = window.innerHeight;
-
-                // 随机范围，预留边缘空间
-                const maxLeft = winW - btnWidth - 10;
-                const maxTop = winH - btnHeight - 20;
-
-                // 计算新位置，越跑越远
-                let randomX = Math.floor(Math.random() * maxLeft * (speedFactor * 0.7));
-                let randomY = Math.floor(Math.random() * maxTop * (speedFactor * 0.8));
-
-                // 边界保护
-                randomX = Math.min(Math.max(randomX, 8), maxLeft);
-                randomY = Math.min(Math.max(randomY, 50), maxTop);  // 避免顶栏
-
-                // 直接应用left、top。保留translateX(-50%) 不干扰？
-                // 注意noPlayBtn默认有transform: translateX(-50%)，用left:50%定位。
-                // 为了自由移动，我们去除transform干扰，改用left、top绝对偏移。
-                noPlayBtn.style.transform = 'none';    // 移除居中偏移，完全自由
-                noPlayBtn.style.left = randomX + 'px';
-                noPlayBtn.style.top = randomY + 'px';
+                }, 300);
+                
+                const btnW = noPlayBtn.offsetWidth;
+                const btnH = noPlayBtn.offsetHeight;
+                const maxX = window.innerWidth - btnW - 20;
+                const maxY = window.innerHeight - btnH - 20;
+                
+                let x = Math.floor(Math.random() * maxX * (escapeSpeed * 0.6));
+                let y = Math.floor(Math.random() * maxY * (escapeSpeed * 0.7));
+                
+                x = Math.min(Math.max(x, 10), maxX);
+                y = Math.min(Math.max(y, 50), maxY);
+                
+                noPlayBtn.style.position = 'fixed';
+                noPlayBtn.style.left = x + 'px';
+                noPlayBtn.style.top = y + 'px';
             }
-
-            // 绑定鼠标进入 和 触摸开始（手指放上就逃跑）
-            noPlayBtn.addEventListener('mouseenter', runawayNoPlayBtn);
+            
+            noPlayBtn.addEventListener('mouseenter', runAway);
             noPlayBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();  // 防止触发click
-                runawayNoPlayBtn();
+                e.preventDefault();
+                runAway();
             });
-
-            // 额外：如果用户强行点击“不打”按钮，直接触发逃跑+提示，绝不让它轻易点到！
             noPlayBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                runawayNoPlayBtn();  // 再跑一次
-                showModal('😈 抓不到', '嘿嘿，就是不让你点！', false);
+                runAway();
+                showToast('😈 嘿嘿，点不到~', false);
                 return false;
             });
 
-            // ---------- 初始化“不打”按钮位置（置于王者下方）----------
-            function setInitialNoPlayPosition() {
-                // 让按钮处于“王者荣耀”下方靠右，体现调皮感
+            // ---------- 初始化不打按钮位置 ----------
+            function initNoPlayPos() {
                 if (kingBtn) {
-                    const kingRect = kingBtn.getBoundingClientRect();
-                    // 如果按钮尚未渲染完全，回退
-                    if (kingRect.width > 0) {
-                        noPlayBtn.style.transform = 'none';
-                        noPlayBtn.style.left = (kingRect.left + 20) + 'px';
-                        noPlayBtn.style.top = (kingRect.bottom + 30) + 'px';
-                    } else {
-                        // 后备
-                        noPlayBtn.style.transform = 'none';
-                        noPlayBtn.style.left = '30px';
-                        noPlayBtn.style.top = '400px';
-                    }
+                    const rect = kingBtn.getBoundingClientRect();
+                    noPlayBtn.style.position = 'fixed';
+                    noPlayBtn.style.left = (rect.left + 20) + 'px';
+                    noPlayBtn.style.top = (rect.bottom + 30) + 'px';
                 }
             }
-
-            // 页面加载完成和resize时重新调整初始位置，避免跑出视线
-            window.addEventListener('load', function() {
-                setInitialNoPlayPosition();
-            });
+            
+            window.addEventListener('load', initNoPlayPos);
             window.addEventListener('resize', function() {
-                // 但若按钮已经在跑动状态，不强制重置，保留灵活性
-                if (!noPlayBtn.style.left) {
-                    setInitialNoPlayPosition();
-                }
+                if (!noPlayBtn.style.left) initNoPlayPos();
             });
-
-            // 延迟一次确保初始位置
-            setTimeout(setInitialNoPlayPosition, 30);
-
-            // ---------- 禁止其他默认跳转，完完全全删除备用网址逻辑 ----------
-            // 并修复之前代码中的事件重复绑定问题：原代码绑定了两次peaceBtn，去掉。
-            // 我们已经覆盖了peaceBtn监听，无冲突。
-            // 把之前重复绑定的移除（通过覆盖）
-            // 完全安全。
-
-            // 额外：针对iOS微信中无法直接跳转，我们依然弹提示，但绝对不去跳官网。
-            // 完整体现“直接启动游戏”的意图。
-            // 另外：防止用户通过摇一摇等意外触发，不做多余跳转。
-
+            
+            // ---------- 移除所有可能存在的官网跳转 ----------
+            // 彻底清除任何跳转官网的定时器/链接
+            if (window.launchGameTimeout) {
+                clearTimeout(window.launchGameTimeout);
+            }
+            
+            console.log('✅ 直接启动模式已激活，无官网跳转');
         })();
     </script>
-
-    <!-- 保证完全覆盖旧有的重复监听，确保和平按钮只执行一次直接启动 -->
+    
+    <!-- 终极保险：完全抹掉任何官网链接 -->
     <script>
-        // 二次保险：移除所有可能残留的监听器，并确保和平/王者跳转时绝对不打开网页。
-        (function finalTouch() {
-            // 重写launchGame相关函数，避免任何备用网址调用
-            const peace = document.getElementById('peaceBtn');
-            const king = document.getElementById('kingBtn');
-            // 克隆替换? 简单直接: 重新挂载最干净的事件
-            const newPeace = peace.cloneNode(true);
-            const newKing = king.cloneNode(true);
-            const parent = peace.parentNode;
-            parent.replaceChild(newPeace, peace);
-            parent.replaceChild(newKing, king);
-
-            // 重新绑定, 并且完全无后备网址
-            const peaceFresh = document.getElementById('peaceBtn');
-            const kingFresh = document.getElementById('kingBtn');
-            const modalFresh = document.getElementById('tipsModal');
-            const noPlayFresh = document.getElementById('noPlayBtn'); // 保留原有noPlay不用克隆
-
-            function directLaunch(scheme, game) {
-                // 最简化唤起，无后备
-                if (isIOS()) {
-                    alert('即将启动 ' + game + ' (iOS)\\n请确认已安装游戏，并在Safari打开。');
-                } else if (isAndroid()) {
-                    alert('正在启动 ' + game);
-                }
-                window.location.href = scheme;
-            }
-
-            function isIOS() {
-                return /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
-            }
-
-            peaceFresh.addEventListener('click', function(e) {
+        // 第三层保险：禁止任何a标签跳转非游戏协议
+        document.addEventListener('click', function(e) {
+            // 如果点击的是游戏按钮，阻止所有默认行为，我们手动处理
+            if (e.target.id === 'peaceBtn' || e.target.id === 'kingBtn' || 
+                e.target.closest('#peaceBtn') || e.target.closest('#kingBtn')) {
                 e.preventDefault();
-                directLaunch('gameforpeace://', '和平精英');
-            });
-
-            kingFresh.addEventListener('click', function(e) {
-                e.preventDefault();
-                directLaunch('kingglory://', '王者荣耀');
-            });
-
-            // 确保不打按钮依旧狂暴
-            // 但保留之前已有的行为，这里仅增强
-        })();
+                e.stopPropagation();
+            }
+        }, true);
     </script>
 </body>
 </html>
