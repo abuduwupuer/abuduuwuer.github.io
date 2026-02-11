@@ -3,91 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>今天打什么游戏</title>
+    <title>今日开黑啥游戏？</title>
     <style>
+        /* 全局重置+游戏风格背景 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Helvetica Neue", "微软雅黑", sans-serif;
+        }
+
         body {
-            font-family: "微软雅黑", Arial, sans-serif;
+            /* 王者+和平精英渐变背景，适配手机全屏 */
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-attachment: fixed;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            margin: 0;
             padding: 20px;
-            background-color: #f0f8ff;
-            box-sizing: border-box;
+            color: #fff;
+            overflow: hidden; /* 防止滚动 */
         }
 
-        h1 {
-            color: #333;
-            margin-bottom: 40px;
-            font-size: 24px;
+        /* 游戏风格标题 */
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00;
+            margin-bottom: 50px;
             text-align: center;
+            letter-spacing: 2px;
         }
 
+        /* 按钮容器：居中+适配手机 */
         .btn-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            width: 80%;
-            max-width: 300px;
+            gap: 25px;
+            width: 85%;
+            max-width: 320px;
         }
 
-        .btn {
-            padding: 18px 0;
-            font-size: 18px;
+        /* 游戏按钮：发光+渐变+点击特效 */
+        .game-btn {
+            padding: 20px 0;
+            font-size: 20px;
             border: none;
-            border-radius: 12px;
+            border-radius: 15px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             width: 100%;
             color: white;
+            font-weight: bold;
+            letter-spacing: 1px;
+            /* 按钮发光特效 */
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
+        /* 和平精英按钮：专属蓝橙渐变 */
         #peaceBtn {
-            background-color: #2196F3;
+            background: linear-gradient(90deg, #0078ff, #ff9500);
         }
         #peaceBtn:hover {
-            background-color: #1976D2;
-            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(0, 120, 255, 0.6);
+            transform: scale(1.05);
         }
 
+        /* 王者荣耀按钮：专属红金渐变 */
         #kingBtn {
-            background-color: #4CAF50;
+            background: linear-gradient(90deg, #e62117, #ffd700);
         }
         #kingBtn:hover {
-            background-color: #45a049;
-            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(230, 33, 23, 0.6);
+            transform: scale(1.05);
         }
 
+        /* 不打按钮：红黑渐变+随机跑动+晃动 */
         #noPlayBtn {
-            background-color: #f44336;
-            color: white;
+            background: linear-gradient(90deg, #333, #f44336);
             position: absolute;
             z-index: 999;
+            width: 85%;
+            max-width: 320px;
+            padding: 20px 0;
+            font-size: 20px;
+            border-radius: 15px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(244, 67, 54, 0.5);
+            transition: all 0.1s ease; /* 快速响应 */
+        }
+        /* 不打按钮晃动特效 */
+        #noPlayBtn.shake {
+            animation: shake 0.3s infinite;
+        }
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, -5px); }
+            100% { transform: translate(5px, 5px); }
+        }
+
+        /* 美观的提示弹窗（替换原生alert） */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #222, #444);
+            padding: 30px 20px;
+            border-radius: 20px;
             width: 80%;
             max-width: 300px;
-            padding: 18px 0;
-            font-size: 18px;
-            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 20px #ffd700;
+        }
+        .modal-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        .modal-text {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .modal-btn {
+            padding: 10px 25px;
+            background: #ff8c00;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-btn:hover {
+            background: #ff6700;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <h1>今天打什么游戏</h1>
+    <!-- 游戏风格标题 -->
+    <h1 class="title">今日开黑啥游戏？</h1>
+    
+    <!-- 按钮容器 -->
     <div class="btn-container">
-        <button class="btn" id="peaceBtn">打和平精英</button>
-        <button class="btn" id="kingBtn">打王者荣耀</button>
-        <button class="btn" id="noPlayBtn">不打</button>
+        <button class="game-btn" id="peaceBtn">📱 打和平精英</button>
+        <button class="game-btn" id="kingBtn">🎮 打王者荣耀</button>
+        <button id="noPlayBtn">🙅 不打！就不打！</button>
+    </div>
+
+    <!-- 自定义提示弹窗 -->
+    <div class="modal" id="tipsModal">
+        <div class="modal-content">
+            <h3 class="modal-title" id="modalTitle">提示</h3>
+            <p class="modal-text" id="modalText">内容</p>
+            <button class="modal-btn" onclick="closeModal()">知道啦</button>
+        </div>
     </div>
 
     <script>
-        // 获取按钮元素
+        // 获取元素
         const peaceBtn = document.getElementById('peaceBtn');
         const kingBtn = document.getElementById('kingBtn');
         const noPlayBtn = document.getElementById('noPlayBtn');
+        const modal = document.getElementById('tipsModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalText = document.getElementById('modalText');
 
-        // 检测设备类型（iOS/安卓）
+        // 检测设备类型
         function getDeviceType() {
             const ua = navigator.userAgent.toLowerCase();
             if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('ipod')) {
@@ -98,66 +206,116 @@
             return 'other';
         }
 
+        // 显示自定义弹窗
+        function showModal(title, text) {
+            modalTitle.textContent = title;
+            modalText.textContent = text;
+            modal.classList.add('show');
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            modal.classList.remove('show');
+        }
+
         // 通用唤起游戏函数
         function launchGame(scheme, backupUrl, gameName) {
             const deviceType = getDeviceType();
             
-            // 根据设备类型给出提示
+            // iOS用户提示
             if (deviceType === 'ios') {
-                alert(`📱 iOS用户提示：
-微信里无法直接启动${gameName}，请点击右上角「···」→「在浏览器中打开」，再点击按钮即可启动游戏！`);
-            } else if (deviceType === 'android') {
-                alert(`🎮 正在启动${gameName}...
-如果未启动，请检查是否安装游戏，或更新微信后重试！`);
+                showModal(
+                    '📱 iOS玩家提示',
+                    `微信里无法直接启动${gameName}哦！
+点击页面右上角「···」→「在浏览器中打开」，
+再点按钮就能直接启动游戏啦～`
+                );
+            } 
+            // 安卓用户提示
+            else if (deviceType === 'android') {
+                showModal(
+                    '🎮 准备开黑！',
+                    `正在启动${gameName}...
+如果没反应，检查是否安装游戏，或更新微信后重试～`
+                );
             }
 
             try {
-                // 尝试唤起游戏APP
+                // 尝试唤起游戏
                 window.location.href = scheme;
                 
-                // 延时检测，唤起失败则跳转官网并提示
+                // 唤起失败兜底
                 setTimeout(() => {
-                    alert(`😥 ${gameName}唤起失败！
-已为你跳转到${gameName}官网，可下载/打开游戏~`);
-                    window.location.href = backupUrl;
+                    showModal(
+                        '😥 唤起失败',
+                        `${gameName}启动失败！已为你跳转到官网，
+可下载/打开游戏～`
+                    );
+                    setTimeout(() => {
+                        window.location.href = backupUrl;
+                    }, 1500);
                 }, 1500);
             } catch (e) {
-                alert(`❌ 唤起失败！已为你跳转到${gameName}官网`);
+                showModal('❌ 出错啦', `唤起失败！已为你跳转到${gameName}官网`);
                 window.location.href = backupUrl;
             }
         }
 
-        // 打和平精英按钮事件
+        // 和平精英按钮事件
         peaceBtn.addEventListener('click', () => {
             launchGame('gameforpeace://', 'https://gp.qq.com/', '和平精英');
         });
 
-        // 打王者荣耀按钮事件
+        // 王者荣耀按钮事件
+        peaceBtn.addEventListener('click', () => {
+            launchGame('gameforpeace://', 'https://gp.qq.com/', '和平精英');
+        });
+
+        // 王者荣耀按钮事件
         kingBtn.addEventListener('click', () => {
             launchGame('kingglory://', 'https://pvp.qq.com/', '王者荣耀');
         });
 
-        // 不打按钮随机跑动
+        // 不打按钮：加速跑动+晃动特效
+        let speed = 1; // 初始速度
         noPlayBtn.addEventListener('touchstart', moveNoPlayBtn);
         noPlayBtn.addEventListener('mouseenter', moveNoPlayBtn);
 
         function moveNoPlayBtn() {
-            const windowWidth = window.innerWidth - noPlayBtn.offsetWidth;
-            const windowHeight = window.innerHeight - noPlayBtn.offsetHeight;
-            const randomX = Math.floor(Math.random() * windowWidth);
-            const randomY = Math.floor(Math.random() * windowHeight);
+            // 每次触发加速+晃动
+            speed += 0.2;
+            noPlayBtn.classList.add('shake');
+            setTimeout(() => {
+                noPlayBtn.classList.remove('shake');
+            }, 300);
+
+            // 适配手机屏幕，防止按钮跑出
+            const btnWidth = noPlayBtn.offsetWidth;
+            const btnHeight = noPlayBtn.offsetHeight;
+            const maxX = window.innerWidth - btnWidth;
+            const maxY = window.innerHeight - btnHeight;
+
+            // 随机位置（加速后更难捕捉）
+            const randomX = Math.floor(Math.random() * maxX * speed) % maxX;
+            const randomY = Math.floor(Math.random() * maxY * speed) % maxY;
+
             noPlayBtn.style.left = `${randomX}px`;
             noPlayBtn.style.top = `${randomY}px`;
         }
 
-        // 初始化按钮位置
+        // 初始化不打按钮位置
         window.addEventListener('load', () => {
             const kingBtnRect = kingBtn.getBoundingClientRect();
             noPlayBtn.style.left = `${kingBtnRect.left}px`;
-            noPlayBtn.style.top = `${kingBtnRect.bottom + 20}px`;
+            noPlayBtn.style.top = `${kingBtnRect.bottom + 25}px`;
+        });
+
+        // 点击空白处关闭弹窗（防误触）
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
         });
     </script>
 </body>
 </html>
-
-
