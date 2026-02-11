@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>今日按打啥游戏</title>
+    <style>
+        /* 适配手机端的整体样式 */
+        body {
+            font-family: "微软雅黑", Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+            box-sizing: border-box;
+        }
+
+        /* 标题样式（适配手机字号） */
+        h1 {
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        /* 按钮容器（手机端竖向排列） */
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        /* 按钮通用样式（适配手机点击区域） */
+        .btn {
+            padding: 18px 0;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            color: white;
+        }
+
+        /* 和平精英按钮样式 */
+        #peaceBtn {
+            background-color: #2196F3;
+        }
+        #peaceBtn:hover {
+            background-color: #1976D2;
+            transform: scale(1.03);
+        }
+
+        /* 王者荣耀按钮样式 */
+        #kingBtn {
+            background-color: #4CAF50;
+        }
+        #kingBtn:hover {
+            background-color: #45a049;
+            transform: scale(1.03);
+        }
+
+        /* 不打按钮样式（绝对定位+手机适配） */
+        #noPlayBtn {
+            background-color: #f44336;
+            color: white;
+            position: absolute;
+            z-index: 999;
+            width: 80%;
+            max-width: 300px;
+            padding: 18px 0;
+            font-size: 18px;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>今日按打啥游戏</h1>
+    <div class="btn-container">
+        <!-- 打和平精英按钮（唤起和平精英APP） -->
+        <button class="btn" id="peaceBtn">打和平精英</button>
+        <!-- 打王者荣耀按钮（唤起王者APP） -->
+        <button class="btn" id="kingBtn">打王者荣耀</button>
+        <!-- 不打按钮（随机跑动） -->
+        <button class="btn" id="noPlayBtn">不打</button>
+    </div>
+
+    <script>
+        // 获取按钮元素
+        const peaceBtn = document.getElementById('peaceBtn');
+        const kingBtn = document.getElementById('kingBtn');
+        const noPlayBtn = document.getElementById('noPlayBtn');
+
+        // 核心：唤起和平精英APP（手机端）
+        peaceBtn.addEventListener('click', () => {
+            // 和平精英APP的唤起链接（Scheme）
+            const peaceScheme = 'gameforpeace://';
+            // 备用链接（唤起失败时跳转到官网）
+            const backupUrl = 'https://gp.qq.com/';
+
+            try {
+                // 尝试唤起和平精英APP
+                window.location.href = peaceScheme;
+                // 延时检测是否唤起成功，失败则跳转官网
+                setTimeout(() => {
+                    window.location.href = backupUrl;
+                }, 1500);
+            } catch (e) {
+                // 异常时直接跳转官网
+                window.location.href = backupUrl;
+            }
+        });
+
+        // 核心：唤起王者荣耀APP（手机端）
+        kingBtn.addEventListener('click', () => {
+            // 王者荣耀APP的唤起链接（Scheme）
+            const kingGloryScheme = 'kingglory://';
+            // 备用链接（唤起失败时跳转到官网）
+            const backupUrl = 'https://pvp.qq.com/';
+
+            try {
+                // 尝试唤起王者荣耀APP
+                window.location.href = kingGloryScheme;
+                // 延时检测是否唤起成功，失败则跳转官网
+                setTimeout(() => {
+                    window.location.href = backupUrl;
+                }, 1500);
+            } catch (e) {
+                // 异常时直接跳转官网
+                window.location.href = backupUrl;
+            }
+        });
+
+        // 不打按钮随机跑动（适配手机屏幕）
+        noPlayBtn.addEventListener('touchstart', moveNoPlayBtn); // 手机触摸事件
+        noPlayBtn.addEventListener('mouseenter', moveNoPlayBtn); // 兼容电脑端
+
+        // 随机移动按钮函数（适配手机）
+        function moveNoPlayBtn() {
+            // 获取手机屏幕可视区域（减去按钮尺寸，避免跑出屏幕）
+            const windowWidth = window.innerWidth - noPlayBtn.offsetWidth;
+            const windowHeight = window.innerHeight - noPlayBtn.offsetHeight;
+
+            // 生成随机坐标（适配手机）
+            const randomX = Math.floor(Math.random() * windowWidth);
+            const randomY = Math.floor(Math.random() * windowHeight);
+
+            // 设置新位置
+            noPlayBtn.style.left = `${randomX}px`;
+            noPlayBtn.style.top = `${randomY}px`;
+        }
+
+        // 初始化按钮位置（适配手机）
+        window.addEventListener('load', () => {
+            const kingBtnRect = kingBtn.getBoundingClientRect();
+            noPlayBtn.style.left = `${kingBtnRect.left}px`;
+            noPlayBtn.style.top = `${kingBtnRect.bottom + 20}px`;
+        });
+    </script>
+</body>
+</html>
