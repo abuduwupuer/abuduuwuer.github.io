@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>极光游戏舱 · 瞬启</title>
+<title>极光游戏舱 · 一键启动</title>
 <style>
   * {
     margin: 0;
@@ -43,7 +43,7 @@
     100% { transform: translate(4%, 6%) rotate(3deg); opacity: 1; }
   }
 
-  /* 星空粒子 */
+  /* 星空粒子背景 */
   body::after {
     content: '';
     position: fixed;
@@ -60,7 +60,7 @@
     z-index: 0;
   }
 
-  /* 主卡片 */
+  /* 主卡片容器 */
   .card {
     position: relative;
     z-index: 10;
@@ -81,6 +81,7 @@
     100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
+  /* 页面切换控制 */
   .page {
     display: none;
     animation: fadeUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
@@ -91,7 +92,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* 标题区 */
+  /* 标题样式 */
   .title {
     font-size: 34px;
     font-weight: 800;
@@ -123,7 +124,7 @@
     border-radius: 60px;
     margin: 10px 0;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -139,7 +140,7 @@
     transition-duration: 0.05s;
   }
 
-  /* 光泽扫光 */
+  /* 按钮扫光动画 */
   .btn::after {
     content: '';
     position: absolute;
@@ -157,25 +158,14 @@
     left: 120%;
   }
 
-  /* 游戏渐变 */
+  /* 游戏按钮专属渐变 */
   .btn-wangzhe { background: linear-gradient(105deg, #5F4DF7, #8A77FF); border: 1px solid rgba(200, 180, 255, 0.6); color: white; }
   .btn-heping { background: linear-gradient(105deg, #1DD1A1, #2EDF8C); border: 1px solid rgba(80, 255, 180, 0.5); color: #0a2f2a; }
   .btn-huoying { background: linear-gradient(105deg, #FF4757, #FF784B); border: 1px solid rgba(255, 100, 80, 0.6); color: white; }
   .btn-no { background: linear-gradient(105deg, #475569, #6C7A91); border: 1px solid rgba(200, 200, 240, 0.3); color: #f1f5f9; }
   .btn-gey { background: linear-gradient(105deg, #C084FC, #F472B6); border: 1px solid rgba(255, 160, 210, 0.7); color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 
-  /* 移动状态下的按钮样式（绝对定位 + 过渡动画） */
-  .btn-moving {
-    position: fixed;
-    z-index: 1000;
-    width: auto;
-    min-width: 140px;
-    transition: top 0.2s ease, left 0.2s ease;
-    margin: 0;
-    box-shadow: 0 0 20px rgba(255,215,0,0.5);
-  }
-
-  /* 超大标题 */
+  /* 超大标题样式 */
   .big-title {
     font-size: 48px;
     font-weight: 800;
@@ -188,186 +178,158 @@
     line-height: 1.2;
   }
 
-  /* 最终页文字 */
-  .final-text {
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 1.45;
-    background: linear-gradient(125deg, #FFE3B0, #FFB84D);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    text-align: center;
-    margin: 40px 0;
-    padding: 0 12px;
-  }
-
-  /* 响应式 */
+  /* 响应式适配手机端 */
   @media (max-width: 480px) {
     .card { padding: 32px 20px; }
     .big-title { font-size: 38px; }
-    .final-text { font-size: 22px; }
     .title { font-size: 28px; }
-    .btn-moving { min-width: 120px; }
   }
 </style>
 </head>
 <body>
 
-<!-- 1. 主页面 -->
+<!-- 1. 主页面：游戏选择 -->
 <div id="page-main" class="card page" style="display: block;">
   <div class="title">选择游戏</div>
-  <div class="desc">点击直接打开已安装的游戏</div>
-  <button class="btn btn-wangzhe" onclick="openWangzhe()">✨ 打开王者荣耀</button>
-  <button class="btn btn-heping" onclick="openHeping()">🔫 打开和平精英</button>
-  <button class="btn btn-huoying" onclick="openHuoying()">🍥 打开火影忍者</button>
-  <button class="btn btn-no" id="noGameBtn" onclick="clickNoGame()">😴 不打游戏</button>
+  <div class="desc">点击直接打开已安装的游戏 · 整活彩蛋版</div>
+  <button class="btn btn-wangzhe" id="openWangzheBtn">✨ 打开王者荣耀</button>
+  <button class="btn btn-heping" id="openHepingBtn">🔫 打开和平精英</button>
+  <button class="btn btn-huoying" id="openHuoyingBtn">🍥 打开火影忍者</button>
+  <button class="btn btn-no" id="noGameBtn">😴 不打游戏</button>
 </div>
 
-<!-- 2. 第三次点不打游戏显示的页面 -->
+<!-- 2. 彩蛋页面：第三次点中不打游戏显示 -->
 <div id="page-no-game" class="card page">
   <div class="big-title">不打游戏的就是gey</div>
-  <button class="btn btn-gey" onclick="showGeyFinal()">🌈 我就是gey</button>
-  <button class="btn btn-wangzhe" onclick="openWangzhe()">👑 打王者</button>
-  <button class="btn btn-heping" onclick="openHeping()">🎯 打和平</button>
-  <button class="btn btn-huoying" onclick="openHuoying()">🍜 打火影</button>
+  <button class="btn btn-gey" id="geyConfirmBtn">🌈 我就是gey</button>
+  <button class="btn btn-wangzhe" id="noGameWangzheBtn">👑 打王者</button>
+  <button class="btn btn-heping" id="noGameHepingBtn">🎯 打和平</button>
+  <button class="btn btn-huoying" id="noGameHuoyingBtn">🍜 打火影</button>
 </div>
 
-<!-- 3. 点我就是gey 最终页面 -->
+<!-- 3. 最终确认页面 -->
 <div id="page-gey" class="card page">
   <div class="big-title" style="font-size: 28px; line-height: 1.6;">其实我早就怀疑你是否gey，今天终于自己承认了</div>
 </div>
 
 <script>
-  // ---------- 游戏启动逻辑（保持不变） ----------
-  const GAME_DOWNLOAD_URL = {
-    wangzhe: 'https://pvp.qq.com/',
-    heping: 'https://gp.qq.com/',
-    huoying: 'https://hyrz.qq.com/'
+  // 游戏配置：专属唤起协议 + 官网兜底链接
+  const GAME_CONFIG = {
+    wangzhe: {
+      scheme: 'wangzhe://',
+      downloadUrl: 'https://pvp.qq.com/'
+    },
+    heping: {
+      scheme: 'hpjy://',
+      downloadUrl: 'https://gp.qq.com/'
+    },
+    huoying: {
+      scheme: 'hyrz://',
+      downloadUrl: 'https://hyrz.qq.com/'
+    }
   };
-  let pendingTimeout = null;
 
-  function tryOpenApp(scheme, gameKey, gameName) {
-    if (pendingTimeout) clearTimeout(pendingTimeout);
-    let pageVisible = true;
-    const handleVisibility = () => { pageVisible = false; };
-    window.addEventListener('blur', handleVisibility, { once: true });
+  // 不打游戏按钮点击计数
+  let noGameClickCount = 0;
+
+  // 页面切换函数
+  function showPage(pageId) {
+    // 隐藏所有页面
+    document.querySelectorAll('.page').forEach(page => {
+      page.style.display = 'none';
+    });
+    // 显示目标页面
+    const targetPage = document.getElementById(pageId);
+    targetPage.style.display = 'block';
+
+    // 回到主页面时，重置按钮状态和计数
+    if (pageId === 'page-main') {
+      resetNoGameBtn();
+    }
+  }
+
+  // 重置不打游戏按钮：还原位置、样式、计数
+  function resetNoGameBtn() {
+    const btn = document.getElementById('noGameBtn');
+    // 清除固定定位，回到原位置
+    btn.style.position = '';
+    btn.style.zIndex = '';
+    btn.style.left = '';
+    btn.style.top = '';
+    btn.style.width = '';
+    // 重置计数
+    noGameClickCount = 0;
+  }
+
+  // 核心唤起游戏函数
+  function openGame(gameKey) {
+    const { scheme, downloadUrl } = GAME_CONFIG[gameKey];
+    let jumpTimer = null;
+
+    // 尝试唤起本地已安装的游戏App
     window.location.href = scheme;
-    pendingTimeout = setTimeout(() => {
-      window.removeEventListener('blur', handleVisibility);
-      if (pageVisible) {
-        const userConfirm = confirm(`⚠️ 未检测到 ${gameName}\n是否前往官方渠道下载？`);
-        if (userConfirm) {
-          window.open(GAME_DOWNLOAD_URL[gameKey], '_blank');
-        }
+
+    // 兜底逻辑：800ms后未唤起成功，自动跳转到游戏官网
+    jumpTimer = setTimeout(() => {
+      if (!document.hidden) {
+        window.location.href = downloadUrl;
       }
-      pendingTimeout = null;
-    }, 1200);
+    }, 800);
+
+    // 成功唤起App时，取消跳转官网
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        clearTimeout(jumpTimer);
+      }
+    }, { once: true });
   }
 
-  function openWangzhe() {
-    tryOpenApp("wangzhe://startgame", "wangzhe", "王者荣耀");
-    setTimeout(() => { alert("正在打开王者荣耀…"); }, 200);
-  }
-  function openHeping() {
-    tryOpenApp("heping://start", "heping", "和平精英");
-    setTimeout(() => { alert("正在打开和平精英…"); }, 200);
-  }
-  function openHuoying() {
-    tryOpenApp("huoying://start", "huoying", "火影忍者");
-    setTimeout(() => { alert("正在打开火影忍者…"); }, 200);
-  }
+  // ---------------------- 按钮点击事件绑定 ----------------------
+  // 主页面游戏启动按钮
+  document.getElementById('openWangzheBtn').addEventListener('click', () => openGame('wangzhe'));
+  document.getElementById('openHepingBtn').addEventListener('click', () => openGame('heping'));
+  document.getElementById('openHuoyingBtn').addEventListener('click', () => openGame('huoying'));
 
-  // ---------- 不打游戏：随机移动 + 三次触发彩蛋（无提醒） ----------
-  let noClickCount = 0;
-  const pageMain = document.getElementById('page-main');
-  const pageNoGame = document.getElementById('page-no-game');
-  const pageGey = document.getElementById('page-gey');
-  const noGameBtn = document.getElementById('noGameBtn');
-  let originalBtnRect = null;
-  let isMoving = false;
+  // 核心整活：不打游戏按钮逻辑
+  document.getElementById('noGameBtn').addEventListener('click', () => {
+    const btn = document.getElementById('noGameBtn');
+    noGameClickCount++;
 
-  // 获取按钮原始位置并记录尺寸
-  function captureOriginalPosition() {
-    if (!originalBtnRect) {
-      const rect = noGameBtn.getBoundingClientRect();
-      originalBtnRect = {
-        top: rect.top,
-        left: rect.left,
-        width: rect.width,
-        height: rect.height
-      };
-    }
-  }
+    // 前2次点击：按钮全屏随机移动，不让点中
+    if (noGameClickCount < 3) {
+      // 固定按钮样式，避免变形，提升层级确保不被遮挡
+      btn.style.position = 'fixed';
+      btn.style.zIndex = '9999';
+      btn.style.width = btn.offsetWidth + 'px';
 
-  // 将按钮还原到原始位置（解除绝对定位）
-  function restoreButton() {
-    if (isMoving) {
-      noGameBtn.classList.remove('btn-moving');
-      noGameBtn.style.position = '';
-      noGameBtn.style.top = '';
-      noGameBtn.style.left = '';
-      noGameBtn.style.width = '';
-      isMoving = false;
-    }
-  }
+      // 屏幕可视区域尺寸 + 安全边距（避免贴边找不到）
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      const btnWidth = btn.offsetWidth;
+      const btnHeight = btn.offsetHeight;
+      const safeMargin = 20;
 
-  // 随机移动按钮到视口内安全位置（绝对定位）
-  function moveButtonRandomly() {
-    if (!isMoving) {
-      // 第一次移动时，记录原始位置并切换为绝对定位
-      captureOriginalPosition();
-      noGameBtn.classList.add('btn-moving');
-      noGameBtn.style.width = originalBtnRect.width + 'px';
-      isMoving = true;
-    }
-    const btnWidth = noGameBtn.offsetWidth;
-    const btnHeight = noGameBtn.offsetHeight;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const maxLeft = viewportWidth - btnWidth - 10;
-    const maxTop = viewportHeight - btnHeight - 10;
-    const minLeft = 10;
-    const minTop = 10;
-    let newLeft = Math.random() * (maxLeft - minLeft) + minLeft;
-    let newTop = Math.random() * (maxTop - minTop) + minTop;
-    newLeft = Math.min(maxLeft, Math.max(minLeft, newLeft));
-    newTop = Math.min(maxTop, Math.max(minTop, newTop));
-    noGameBtn.style.left = newLeft + 'px';
-    noGameBtn.style.top = newTop + 'px';
-  }
+      // 计算随机位置，确保按钮完全在屏幕内
+      const maxLeft = screenWidth - btnWidth - safeMargin * 2;
+      const maxTop = screenHeight - btnHeight - safeMargin * 2;
+      const randomLeft = Math.floor(Math.random() * maxLeft) + safeMargin;
+      const randomTop = Math.floor(Math.random() * maxTop) + safeMargin;
 
-  // 点击不打游戏的主逻辑（无 alert）
-  function clickNoGame() {
-    // 如果已经进入隐藏页面，不再移动
-    if (pageMain.style.display === 'none') return;
-
-    noClickCount++;
-    if (noClickCount < 3) {
-      // 前两次：移动按钮
-      moveButtonRandomly();
-    } else if (noClickCount === 3) {
-      // 第三次：还原按钮位置，跳转隐藏页面
-      restoreButton();
-      pageMain.style.display = 'none';
-      pageNoGame.style.display = 'block';
-      // 重置计数器（可选，因为页面已隐藏）
-      noClickCount = 0;
-    }
-  }
-
-  // 显示最终gey页面
-  function showGeyFinal() {
-    pageNoGame.style.display = 'none';
-    pageGey.style.display = 'block';
-  }
-
-  // 窗口大小改变时，如果按钮在移动状态，重新调整位置避免越界
-  window.addEventListener('resize', () => {
-    if (isMoving) {
-      moveButtonRandomly();
+      // 触发移动动画
+      btn.style.left = randomLeft + 'px';
+      btn.style.top = randomTop + 'px';
+    } else {
+      // 第3次点击：触发彩蛋页面，重置按钮状态
+      resetNoGameBtn();
+      showPage('page-no-game');
     }
   });
+
+  // 彩蛋页面按钮绑定
+  document.getElementById('geyConfirmBtn').addEventListener('click', () => showPage('page-gey'));
+  document.getElementById('noGameWangzheBtn').addEventListener('click', () => openGame('wangzhe'));
+  document.getElementById('noGameHepingBtn').addEventListener('click', () => openGame('heping'));
+  document.getElementById('noGameHuoyingBtn').addEventListener('click', () => openGame('huoying'));
 </script>
 </body>
 </html>
